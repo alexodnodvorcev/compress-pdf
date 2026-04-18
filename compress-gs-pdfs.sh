@@ -76,6 +76,13 @@ while IFS= read -r -d '' pdf_file; do
         -dPreserveDeviceN=true \
         -dMaxInlineImageSize=0 \
         -sOutputFile="$tmp_file" \
+        -dAutoFilterColorImages=false \
+        -dColorImageFilter=//FlateEncode \
+        -dAutoFilterGrayImages=false \
+        -dGrayImageFilter=//FlateEncode \
+        -dDownsampleColorImages=false \
+        -dDownsampleGrayImages=false \
+        -dDownsampleMonoImages=false \
         "$pdf_file"
 
     if [ ! -f "$tmp_file" ] || [ ! -s "$tmp_file" ]; then
