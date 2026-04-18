@@ -54,6 +54,18 @@ while IFS= read -r -d '' pdf_file; do
     # Временный файл для сжатой версии
     tmp_file=$(mktemp --suffix=.pdf)
 
+    # Определяем ОС
+    case "$(uname -s)" in
+    CYGWIN* | MINGW* | MSYS*)
+        # Windows (Git Bash, MSYS2, Cygwin)
+        COLOR_FILTER="//FlateEncode"
+        ;;
+    *)
+        # Linux, macOS, и другие Unix-like
+        COLOR_FILTER="/FlateEncode"
+        ;;
+    esac
+
     # Сжатие через Ghostscript
     gs -sDEVICE=pdfwrite \
         -dCompatibilityLevel=1.4 \
@@ -77,9 +89,9 @@ while IFS= read -r -d '' pdf_file; do
         -dMaxInlineImageSize=0 \
         -sOutputFile="$tmp_file" \
         -dAutoFilterColorImages=false \
-        -dColorImageFilter=//FlateEncode \
+        -dColorImageFilter="$COLOR_FILTER" \
         -dAutoFilterGrayImages=false \
-        -dGrayImageFilter=//FlateEncode \
+        -dGrayImageFilter="$COLOR_FILTER" \
         -dDownsampleColorImages=false \
         -dDownsampleGrayImages=false \
         -dDownsampleMonoImages=false \
