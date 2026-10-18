@@ -1,2 +1,4 @@
 *.backup
 portable_mingw64_here.cmd
+*.pyc
+*.exe

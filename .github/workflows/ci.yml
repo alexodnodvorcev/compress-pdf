@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lossless-compression:
+    name: Lossless PDF compression
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Ghostscript
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ghostscript
+
+      - name: Verify compression is lossless
+        run: bash tests/test_lossless_compression.sh
